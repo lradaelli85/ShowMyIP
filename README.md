@@ -2,7 +2,7 @@
 
 This script will show on your Bash terminal your local and public IP addresses
 
-![bash](https://https://raw.githubusercontent.com/lradaelli85/ShowMyIP/master/image/bash.png)
+![bash](https://github.com/lradaelli85/ShowMyIP/blob/master/image/bash.png)
 
 # Requirements
 
