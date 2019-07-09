@@ -1,0 +1,36 @@
+#!/bin/bash
+
+IFACE="None"
+PUB_IP="None"
+DEF_GW_ROUTE=`ip -4 route |grep default |wc -l`
+
+if [ "$DEF_GW_ROUTE" -eq 1 ]
+  then
+    IFACE=`ip -4 route |grep default |cut -d' ' -f5`
+    LOCAL_IP=`ip -4 -o address show $IFACE |awk '{print $4}' |cut -d '/' -f1 2>/dev/null`
+    DIG=`which dig`
+    if [ $? -eq 0 ]
+      then
+          HOST="myip.opendns.com"
+          DNS="resolver1.opendns.com"
+          OPTIONS="-4 +short +tries=1 +retry=0 +timeout=1"
+          PUB_IP=`$DIG $OPTIONS $HOST @$DNS`
+          if [[ $PUB_IP =~ ^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$ ]]
+            then
+              :
+            else
+              PUB_IP="DNSfailure"
+          fi
+    fi
+elif [ "$DEF_GW_ROUTE" -gt 1 ]
+  then
+    LOCAL_IP="MultipleIfaceUP"
+elif [ "$DEF_GW_ROUTE" -eq 0 ]
+  then
+    LOCAL_IP=`ip -o -4 addr show |awk '{if ($2 ~ "^en" || $2 ~ "^wl" || $2 ~ "^eth" || $2 ~ "^br" ) print $4} ' |cut -d '/' -f1 |head -n1`
+    if [ -z $LOCAL_IP ]
+      then
+          LOCAL_IP="NoLocalIP"
+    fi
+fi
+echo $PUB_IP-$LOCAL_IP > /tmp/ip_adddresses
