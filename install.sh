@@ -40,10 +40,10 @@ function install(){
 		if [ $not_su == 1 ]
 		then
 			echo "running $cmd"
-			#$SUDO "$cmd"
+			$SUDO "$cmd"
 		else
 			echo "running $cmd"
-			#$SUDO $cmd
+			$SUDO $cmd
 		fi
 	done	
 	echo "SETUP DONE!"
