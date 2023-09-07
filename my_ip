@@ -12,7 +12,7 @@ if [ "$DEF_GW_ROUTE" -eq 1 ]
     if [ $? -eq 0 ]
        then
           HOST="myip.opendns.com"
-          DNS=""
+          DNS="208.67.222.222"
           OPTIONS="-4 -b $LOCAL_IP +short +tries=1 +retry=0 +timeout=1"
           if [ -z $DNS ]
             then
